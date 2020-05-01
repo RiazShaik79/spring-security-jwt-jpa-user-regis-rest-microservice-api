@@ -22,8 +22,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	private MyUserDetailsService myUserDetailsService;
+	//@Autowired
+	//private MyUserDetailsService myUserDetailsService;
 	
 	
 	@Autowired
@@ -34,7 +34,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			
 		//auth.userDetailsService(myUserDetailsService);
 		
-		auth.ldapAuthentication()
+	/*	auth.ldapAuthentication()
 			.userDnPatterns("uid={0},ou=people")
 			.groupSearchBase("ou=groups")
 			.contextSource()
@@ -42,7 +42,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.and()
 			.passwordCompare()
 			.passwordEncoder(new LdapShaPasswordEncoder())
-			.passwordAttribute("userPassword");
+			.passwordAttribute("userPassword"); */
+		
 	}
 
 	@Override

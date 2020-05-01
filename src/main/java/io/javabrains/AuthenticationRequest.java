@@ -1,5 +1,8 @@
 package io.javabrains;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class AuthenticationRequest {
 	
 	public AuthenticationRequest(String username, String password) {

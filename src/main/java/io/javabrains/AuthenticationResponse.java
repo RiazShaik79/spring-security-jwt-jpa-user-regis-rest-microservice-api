@@ -1,16 +1,24 @@
 package io.javabrains;
 
+import org.springframework.security.core.Authentication;
+
 public class AuthenticationResponse {
 	
-	public AuthenticationResponse(String jwt) {
-		
-		Jwt = jwt;
+	private final Authentication authentication;
+	
+	public Authentication getAuthentication() {
+		return authentication;
 	}
 
-	private final String Jwt;
+
+	public AuthenticationResponse(Authentication auth) {
+		
+		authentication = auth;
+	}
+
 	
-	public String getJwt( ) {
-		return Jwt;
+   public Authentication getAuth( ) {
+		return authentication;
 	}
 	
 	

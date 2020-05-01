@@ -25,10 +25,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 	@Autowired
 	private jwtUtil jwtUtil;
 	
-	@Autowired
-	private PersonRepository personRepository;
 	
-	private Person person;
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -45,7 +42,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			username = jwtUtil.extractUsername(jwt);
 		}
 		
-		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+		/*if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 			if (jwtUtil.ValidateToken(jwt)) {
 								
 				person = personRepository.findOne(jwtUtil.extractUsername(jwt));
@@ -59,12 +56,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			
 			catch (Exception e) {
 				System.out.println("error" + e);
-			}
+			} 
 			
-		}
+		}*/
 		
 		
-	}
+	
 		filterChain.doFilter(request, response);
 	}
 
