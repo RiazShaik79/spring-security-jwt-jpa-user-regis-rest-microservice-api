@@ -13,6 +13,10 @@ public class AuthenticationResponse1 {
 
 	private String Jwt;
 	
+	public void setJwt(String jwt) {
+		Jwt = jwt;
+	}
+
 	public String getJwt( ) {
 		return Jwt;
 	}

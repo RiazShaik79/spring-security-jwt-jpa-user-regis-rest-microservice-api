@@ -40,9 +40,10 @@ public class HomeResource {
 	@Autowired
 	private jwtUtil jwtTokenUtil;
 	
-	
-	
 	private AuthenticationResponse1 authenticationResponse;
+	
+	@Autowired
+	private AuthenticationService authenticationService;
 	
 	//private User user;
 	
@@ -59,21 +60,8 @@ public class HomeResource {
 	@RequestMapping(value="/authenticate", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
 	
-				
-		RestTemplate restTemplate = new RestTemplate();
-		
-		try {
-		restTemplate.postForObject("http://localhost:8080/authenticate", authenticationRequest, AuthenticationResponse1.class);
-		}
-		
-		catch(Exception e) {
-			System.out.println("error error : " + e);
-			return ResponseEntity.ok("UnAuthorized Credentials");	
-		}
-		
-		String Jwt = jwtTokenUtil.generateToken(authenticationRequest.getUsername());
-		return ResponseEntity.ok(Jwt);	
-
+		authenticationResponse = authenticationService.validateAuthentication(authenticationRequest);
+		return ResponseEntity.ok(authenticationResponse.getJwt());
 	}
 		
 	@RequestMapping("/users")
