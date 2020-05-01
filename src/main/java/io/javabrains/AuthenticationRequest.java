@@ -1,8 +1,6 @@
 package io.javabrains;
 
-import org.springframework.stereotype.Component;
 
-@Component
 public class AuthenticationRequest {
 	
 	public AuthenticationRequest(String username, String password) {
@@ -29,6 +27,8 @@ public class AuthenticationRequest {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	
 	private String username;
 	private String password;
 	

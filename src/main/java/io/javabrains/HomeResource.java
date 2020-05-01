@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -24,15 +25,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.unboundid.util.json.JSONObject;
+
 
 //import com.innovativeintelli.ldapauthenticationjwttoken.security.JwtTokenProvider;
 
 @RestController
 public class HomeResource {
 	
-	@Autowired
-	private  AuthenticationManager authenticationManager;
+	private  Authentication authentication;
 	
 	@Autowired
 	private UserService UserService;
@@ -40,10 +40,9 @@ public class HomeResource {
 	@Autowired
 	private jwtUtil jwtTokenUtil;
 	
-	@Autowired
-	private AuthenticationRequest authRequest;
 	
-	private AuthenticationResponse authenticationResponse;
+	
+	private AuthenticationResponse1 authenticationResponse;
 	
 	//private User user;
 	
@@ -59,34 +58,24 @@ public class HomeResource {
 	
 	@RequestMapping(value="/authenticate", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
-		
-		
+	
+				
 		RestTemplate restTemplate = new RestTemplate();
-		HttpHeaders headers = new HttpHeaders();
-	    headers.setContentType(MediaType.APPLICATION_JSON);
-	    //headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-	    
-	   Map<String, Object> map = new HashMap<>();
-	   map.put("password", authenticationRequest.getPassword());
-	   map.put("username", authenticationRequest.getUsername());
-	  
-	   
-	   
-	   HttpEntity<Map<String, Object>> request = new HttpEntity<>(map, headers);
 		
-	    System.out.println(request);
-		authenticationResponse = restTemplate.postForObject("http://localhost8080/authenticate", request, AuthenticationResponse.class);
+		try {
+		restTemplate.postForObject("http://localhost:8080/authenticate", authenticationRequest, AuthenticationResponse1.class);
+		}
 		
-		Authentication auth = authenticationResponse.getAuth();
+		catch(Exception e) {
+			System.out.println("error error : " + e);
+			return ResponseEntity.ok("UnAuthorized Credentials");	
+		}
 		
-		final String Jwt = jwtTokenUtil.generateToken(auth);
-		
-		return ResponseEntity.ok(Jwt);
-		
+		String Jwt = jwtTokenUtil.generateToken(authenticationRequest.getUsername());
+		return ResponseEntity.ok(Jwt);	
 
 	}
-	
-	
+		
 	@RequestMapping("/users")
 	public List<User> getAllUsers() {
 		return UserService.getAllUsers();

@@ -26,29 +26,29 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 	private jwtUtil jwtUtil;
 	
 	
-	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		
 		
-		
 		final String authorizationHeader = request.getHeader("Authorization");
 		String username =null;
 		String jwt = null;
+		System.out.println("authorizationHeader " + authorizationHeader) ;
 		
 		if (authorizationHeader != null && authorizationHeader.startsWith("Bearer")) {
 			jwt = authorizationHeader.substring(7);
 			username = jwtUtil.extractUsername(jwt);
+			System.out.println(username) ;
 		}
 		
-		/*if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 			if (jwtUtil.ValidateToken(jwt)) {
-								
-				person = personRepository.findOne(jwtUtil.extractUsername(jwt));
+								System.out.println("Token Validated") ;
+				
 							
 				try {
-				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(person.getUid(), null, new ArrayList<>());
+				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(jwtUtil.extractUsername(jwt), null, new ArrayList<>());
 				usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 				
@@ -56,13 +56,18 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			
 			catch (Exception e) {
 				System.out.println("error" + e);
-			} 
+			}
+			}
 			
-		}*/
+			else 
+			{
+					System.out.println("Token Not Validated") ;
+				}
+			
+		} 
 		
-		
-	
 		filterChain.doFilter(request, response);
+		
 	}
 
 }	

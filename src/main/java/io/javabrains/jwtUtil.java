@@ -42,15 +42,15 @@ public class jwtUtil {
         return claims.getSubject();
 	}
 	
-	public String generateToken(Authentication authentication) {
-    	LdapUserDetailsImpl userPrincipal = (LdapUserDetailsImpl) authentication.getPrincipal();
+	public String generateToken(String username) {
+    	//LdapUserDetailsImpl userPrincipal = (LdapUserDetailsImpl) authentication.getPrincipal();
     	
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
-        System.out.println(now + " " + expiryDate + " " + userPrincipal.getUsername() + " " + jwtSecret + " " + authentication.getCredentials());
+        System.out.println(now + " " + expiryDate + " " + username + " " + jwtSecret);
         
         return Jwts.builder()
-                .setSubject(userPrincipal.getUsername())
+                .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
