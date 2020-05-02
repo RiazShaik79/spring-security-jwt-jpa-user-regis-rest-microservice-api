@@ -14,9 +14,10 @@ public class AuthenticationService {
 	@Autowired
 	private jwtUtil jwtTokenUtil;
 	
-	public AuthenticationResponse1 validateAuthentication(AuthenticationRequest request) {
+	@Autowired
+	private RestTemplate restTemplate;
 	
-	RestTemplate restTemplate = new RestTemplate();
+	public AuthenticationResponse1 validateAuthentication(AuthenticationRequest request) {
 	
 	try {
 		
