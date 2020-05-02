@@ -21,7 +21,7 @@ public class SpringSecurityLdapApplication {
 	private static Logger log = LoggerFactory.getLogger(SpringSecurityLdapApplication.class);
 
     @Bean
-	private RestTemplate getRestTemplate() {
+	public RestTemplate getRestTemplate() {
     	return new RestTemplate() ;
     	
     }
