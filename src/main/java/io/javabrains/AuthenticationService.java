@@ -22,7 +22,7 @@ public class AuthenticationService {
 	try {
 		
 		response =
-				restTemplate.postForObject("http://localhost:8080/authenticate", request, AuthenticationResponse1.class);
+				restTemplate.postForObject("http://user-auth-service/authenticate", request, AuthenticationResponse1.class);
 			System.out.println(response.getJwt()) ;
 	}
 	
