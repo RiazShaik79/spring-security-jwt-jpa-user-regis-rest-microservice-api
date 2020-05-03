@@ -13,7 +13,11 @@ public class UserService {
 	
 	@Autowired
 	private UserRepository UserRepository;
-		
+
+	@Autowired
+	private EmailSender emailSender;
+	
+	
 	/*private List<User> Users = new ArrayList<>(Arrays.asList(
 				new User("spring","Spring Framework","Spring Framework Description"),
 				new User("java","Core Java","Core Java Description"),
@@ -33,6 +37,7 @@ public class UserService {
 
 	public void addUser(User User) {
 		UserRepository.save(User);
+		emailSender.sendTopic(new Email("info@example.com", "Hello"));
 	}
 
 	public void updateUser(User User, int Id) {
