@@ -2,8 +2,27 @@ package io.javabrains;
 
 public class Email {
 
-  private String to;
-  private String body;
+	private String to;
+	private String subject;
+	private String body;
+		
+ public Email(String to, String subject, String body) {
+		super();
+		this.to = to;
+		this.subject = subject;
+		this.body = body;
+	}
+
+
+  public String getSubject() {
+	return subject;
+}
+
+public void setSubject(String subject) {
+	this.subject = subject;
+}
+
+
 
   public Email() {
   }

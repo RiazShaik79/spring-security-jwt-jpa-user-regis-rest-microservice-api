@@ -37,7 +37,7 @@ public class UserService {
 
 	public void addUser(User User) {
 		UserRepository.save(User);
-		emailSender.sendTopic(new Email("info@example.com", "Hello"));
+		emailSender.sendTopic(new Email("r.shaik.b@gmail.com", "Hello","Hello, This is my first email"));
 	}
 
 	public void updateUser(User User, int Id) {
