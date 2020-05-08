@@ -11,7 +11,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 public class AuthenticationService {
 	
 
-	private AuthenticationResponse1 response = new AuthenticationResponse1();
+	private AuthenticationResponse response = new AuthenticationResponse();
 	
 	@Autowired
 	private jwtUtil jwtTokenUtil;
@@ -20,28 +20,30 @@ public class AuthenticationService {
 	private RestTemplate restTemplate;
 	
 	@HystrixCommand(fallbackMethod = "reliable")
-	public AuthenticationResponse1 validateAuthentication(AuthenticationRequest request) {
+	public ResponseEntity<?> validateAuthentication(AuthenticationRequest request) {
 	
 	try {
 		
 		response =
-				restTemplate.postForObject("http://user-auth-service/authenticate", request, AuthenticationResponse1.class);
-			System.out.println(response.getJwt()) ;
+			restTemplate.postForObject("http://user-auth-service/authenticate", request, AuthenticationResponse.class);
+			System.out.println(response.getAuthStatus()) ;
 	}
 	
 	catch(Exception e) {
 		System.out.println("error error : " + e);
 	}
-	
+	if (response.getAuthStatus().equals("Authorized")) {
 	String Jwt = jwtTokenUtil.generateToken(request.getUsername());
-	
 	response.setJwt(Jwt);
+	return ResponseEntity.ok(response.getJwt());	
+	}
 	
-	return response;	
+	
+  	return ResponseEntity.ok(response.getAuthStatus());	
 
 }
 	
-	public AuthenticationResponse1 reliable(AuthenticationRequest request) {
-		  return new AuthenticationResponse1("Cloud Native Java (O'Reilly)");
+	public ResponseEntity<?> reliable(AuthenticationRequest request) {
+		  return ResponseEntity.ok("Cloud Native Java (O'Reilly)");
 		  }
 }

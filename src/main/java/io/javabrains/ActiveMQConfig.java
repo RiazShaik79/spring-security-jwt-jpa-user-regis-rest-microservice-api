@@ -39,13 +39,13 @@ public class ActiveMQConfig {
 		return new ActiveMQQueue("mailbox");
 	}
 	
-	@Bean
+	/*@Bean
 	public ActiveMQConnectionFactory activeMQConnectionFactory() {
 	
 			ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory();
 			factory.setBrokerURL(brokerUrl);
 			return factory;
-	}
+	} */
 	
 /*	@Bean
 	public JmsListenerContainerFactory<?> myFactory(ConnectionFactory connectionFactory,

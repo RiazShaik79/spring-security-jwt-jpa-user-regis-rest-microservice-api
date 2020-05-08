@@ -37,12 +37,15 @@ public class HomeResource {
 	private  Authentication authentication;
 	
 	@Autowired
-	private UserService UserService;
+	private UserService userService;
+	
+	@Autowired
+	private OTPService otpService;
 	
 	@Autowired
 	private jwtUtil jwtTokenUtil;
 	
-	private AuthenticationResponse1 authenticationResponse;
+	private AuthenticationResponse authenticationResponse;
 	
 	@Autowired
 	private AuthenticationService authenticationService;
@@ -59,36 +62,56 @@ public class HomeResource {
 		return "Hello World!..";
 	}
 	
-	@RequestMapping(value="/authenticate", method = RequestMethod.POST)
+	@RequestMapping(value="/login", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
 
-		authenticationResponse = authenticationService.validateAuthentication(authenticationRequest);
-		return ResponseEntity.ok(authenticationResponse.getJwt());
+		return authenticationService.validateAuthentication(authenticationRequest);
 	}
 		
-	@RequestMapping("/users")
+	@RequestMapping("/users/all")
 	public List<User> getAllUsers() {
-		return UserService.getAllUsers();
+		return userService.getAllUsers();
 	}
 
 	@RequestMapping("/user/{Id}")
-	public  Optional<User> getUser(@PathVariable int Id) {
-		return UserService.getUser(Id);
+	public  User getUser(@PathVariable int Id) {
+		return userService.getUser(Id);
 	}
 	
-	@RequestMapping(method=RequestMethod.POST, value="/Users")
+	@RequestMapping(method=RequestMethod.POST, value="/user/add")
 	public void addUser(@RequestBody User User) {
-		UserService.addUser(User);
+		userService.addUser(User);
 	}
 	
-	@RequestMapping(method=RequestMethod.PUT, value="/Users/{Id}")
+	@RequestMapping(method=RequestMethod.PUT, value="/user/update/{Id}")
 	public void updateUser(@RequestBody User User, @PathVariable int Id) {
-		UserService.updateUser(User, Id );
+		userService.updateUser(User, Id );
 	}
 	
-	@RequestMapping(method=RequestMethod.DELETE, value="/Users/{Id}")
+	@RequestMapping(method=RequestMethod.DELETE, value="/user/delete/{Id}")
 	public void deleteUser(@PathVariable int Id) {
-		UserService.deleteUser(Id);
+		userService.deleteUser(Id);
 	}
+	
+	@RequestMapping(method=RequestMethod.POST, value="/user/forgotpassword/{Id}")
+	public ResponseEntity<?> verifyUserandGenerateOTP(@PathVariable int Id) {
+		System.out.println("In verifyUser and GenerateOTP service");
+		User user = userService.getUser(Id);
+		return otpService.sendOTP(user.getPhone());
+	}
+	
+	@RequestMapping(method=RequestMethod.POST, value="/user/verifyOTP/{Id}")
+	public  ResponseEntity<?> verifyOTP(@PathVariable int Id, @RequestBody OTPModel requestBodyotpModel) {
+		User user = userService.getUser(Id);
+		OTPModel otpModel = new OTPModel();
+		otpModel.setMobilenumber(user.getPhone());
+		otpModel.setOtp(requestBodyotpModel.getOtp());
+		
+		
+		return otpService.verifyOTP(otpModel);
+	
+	}
+	
+
 
 }
