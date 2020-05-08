@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+
 @Service
 public class AuthenticationService {
 	
@@ -17,6 +19,7 @@ public class AuthenticationService {
 	@Autowired
 	private RestTemplate restTemplate;
 	
+	@HystrixCommand(fallbackMethod = "reliable")
 	public AuthenticationResponse1 validateAuthentication(AuthenticationRequest request) {
 	
 	try {
@@ -37,4 +40,8 @@ public class AuthenticationService {
 	return response;	
 
 }
+	
+	public AuthenticationResponse1 reliable(AuthenticationRequest request) {
+		  return new AuthenticationResponse1("Cloud Native Java (O'Reilly)");
+		  }
 }
