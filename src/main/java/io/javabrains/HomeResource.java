@@ -106,8 +106,7 @@ public class HomeResource {
 		OTPModel otpModel = new OTPModel();
 		otpModel.setMobilenumber(user.getPhone());
 		otpModel.setOtp(requestBodyotpModel.getOtp());
-		
-		
+				
 		return otpService.verifyOTP(otpModel);
 	
 	}
