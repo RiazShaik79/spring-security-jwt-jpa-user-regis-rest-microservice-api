@@ -25,7 +25,7 @@ public class AuthenticationService {
 	try {
 		
 		response =
-			restTemplate.postForObject("http://user-auth-service/authenticate", request, AuthenticationResponse.class);
+			restTemplate.postForObject("https://user-auth-service/authenticate", request, AuthenticationResponse.class);
 			System.out.println(response.getAuthStatus()) ;
 	}
 	

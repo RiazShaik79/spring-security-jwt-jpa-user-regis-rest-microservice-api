@@ -1,0 +1,25 @@
+server:
+   port: 8444
+   ssl:
+      enabled: true
+#     client-auth: need
+      key-store: classpath:user-regis-api-cert.jks
+      key-store-password: India330$$
+      keyStoreType: JKS
+      keyStoreProvider: SUN
+      keyAlias: user-regis-api-cert
+      trust-store: classpath:user-regis-api-cert.jks
+      trust-store-password: India330$$
+      trust-store-type: JKS
+eureka:
+  instance:
+    nonSecurePortEnabled: false
+    securePortEnabled: true
+    securePort: ${server.port}
+    statusPageUrl: https://localhost:${server.port}/info
+    healthCheckUrl: https://localhost:${server.port}/health
+    homePageUrl: https://localhost:${server.port}
+  client:
+    securePortEnabled: true
+    serviceUrl:
+      defaultZone: https://localhost:8761/eureka/
