@@ -21,29 +21,42 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.client.RestTemplate;
 
 import com.netflix.discovery.DiscoveryClient;
 import com.netflix.discovery.shared.transport.jersey.EurekaJerseyClientImpl.EurekaJerseyClientBuilder;
 
+import brave.sampler.Sampler;
+
 @EnableCircuitBreaker
 @SpringBootApplication
 @EntityScan
 @RefreshScope
-public class SpringSecurityLdapApplication {
+@EnableCaching
+@EnableTransactionManagement
+public class SpringSecurityLdapApplication extends SpringBootServletInitializer {
 
+	
 	private static Logger log = LoggerFactory.getLogger(SpringSecurityLdapApplication.class);
+	
 	
 	@Bean
 	public JmsListenerContainerFactory<?> myFactory(ConnectionFactory connectionFactory,
@@ -63,9 +76,10 @@ public class SpringSecurityLdapApplication {
 	  } 
 	  
 
-    @Bean
+   /* @Bean
     @LoadBalanced
 	public RestTemplate getRestTemplate() {
+    	return new RestTemplate() ;
     	RestTemplate restTemplate = new RestTemplate();
     	
     	KeyStore keyStore;
@@ -97,20 +111,18 @@ public class SpringSecurityLdapApplication {
     		System.out.println("Exception occured while creating rest templplate " + exception);
     		exception.printStackTrace();
      		
-    	}
+    	}  
     	
     	
-    	return restTemplate ;
-    
-    //	return new RestTemplate() ;
+    	return restTemplate ; 
     	
-    }
+    } */
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringSecurityLdapApplication.class, args);
 	}
 	
-	 @Bean
+	 /* @Bean
 		public DiscoveryClient.DiscoveryClientOptionalArgs discoveryClientOptionalArgs() throws NoSuchAlgorithmException {
 		    DiscoveryClient.DiscoveryClientOptionalArgs args = new DiscoveryClient.DiscoveryClientOptionalArgs();
 		    System.setProperty("javax.net.ssl.keyStore", "src/main/resources/user-regis-api-cert.jks");
@@ -124,6 +136,15 @@ public class SpringSecurityLdapApplication {
 		    builder.withMaxConnectionsPerHost(10);
 		    args.setEurekaJerseyClient(builder.build());
 		    return args;
+		}  */
+	 
+	 protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+			return builder.sources(SpringSecurityLdapApplication.class); 
 		} 
+	
+	   @Bean
+	   public Sampler defaultSampler() {
+		   return Sampler.ALWAYS_SAMPLE;
+	   }
 	
 }

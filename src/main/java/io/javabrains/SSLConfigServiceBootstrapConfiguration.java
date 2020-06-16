@@ -18,7 +18,7 @@ public class SSLConfigServiceBootstrapConfiguration {
 	 @Autowired
 	    ConfigClientProperties properties;
 	 
-	    @Bean
+	 /*   @Bean
 	    public ConfigServicePropertySourceLocator configServicePropertySourceLocator() throws Exception {
 	        final char[] password = "India330$$".toCharArray();
 	        final ClassPathResource resource = new ClassPathResource("config-service-cert.jks");
@@ -34,6 +34,6 @@ public class SSLConfigServiceBootstrapConfiguration {
 	        ConfigServicePropertySourceLocator configServicePropertySourceLocator = new ConfigServicePropertySourceLocator(properties);
 	        configServicePropertySourceLocator.setRestTemplate(new RestTemplate(requestFactory));
 	        return configServicePropertySourceLocator;
-	    }
+	    }  */
 
 }

@@ -10,6 +10,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -25,10 +26,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-
-
-
-//import com.innovativeintelli.ldapauthenticationjwttoken.security.JwtTokenProvider;
 
 @RestController
 @RefreshScope
@@ -62,9 +59,9 @@ public class HomeResource {
 		return "Hello World!..";
 	}
 	
-	@RequestMapping(value="/login", method = RequestMethod.POST)
+	@RequestMapping(value="/userlogin", method = RequestMethod.POST, produces={"text/plain"}, consumes={"application/JSON"})
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
-
+		System.out.println("Im in user-login method");
 		return authenticationService.validateAuthentication(authenticationRequest);
 	}
 		
@@ -79,13 +76,13 @@ public class HomeResource {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST, value="/user/add")
-	public void addUser(@RequestBody User User) {
-		userService.addUser(User);
+	public User addUser(@RequestBody User User) {
+		return userService.addUser(User);
 	}
 	
 	@RequestMapping(method=RequestMethod.PUT, value="/user/update/{Id}")
-	public void updateUser(@RequestBody User User, @PathVariable int Id) {
-		userService.updateUser(User, Id );
+	public User updateUser(@RequestBody User User, @PathVariable int Id) {
+		return userService.updateUser(User, Id );
 	}
 	
 	@RequestMapping(method=RequestMethod.DELETE, value="/user/delete/{Id}")
@@ -110,7 +107,5 @@ public class HomeResource {
 		return otpService.verifyOTP(otpModel);
 	
 	}
-	
-
 
 }
